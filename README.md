@@ -3,6 +3,8 @@
 Plataforma de autoestima, bem-estar e comunidade (projeto escolar): um **daily de bem-estar + comunidade**.
 Mensagem do dia, check-in de humor, gratidão, metas, desafios, conteúdos educativos e publicações da comunidade, em uma interface leve e acolhedora.
 
+**Site publicado:** https://averdadeportrasdocorpoperfeito.vercel.app
+
 ## Como executar
 
 Requer Node 20+.
@@ -64,6 +66,7 @@ Com o servidor de desenvolvimento rodando:
 ```bash
 node qa/auth.mjs             # cadastro, login, logout, persistência e isolamento entre usuários
 node qa/flows.mjs            # fluxos funcionais (desktop e mobile)
+node qa/live.mjs             # páginas, imagens e menu mobile (use BASE=<url publicada>)
 WIDTHS=1440,390 PAGES=/,/comunidade node qa/shots.mjs   # screenshots + checagem de overflow
 ```
 
