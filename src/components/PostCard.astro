@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import Avatar from './Avatar.astro';
+import { postCategories } from '../data/categories';
+import type { Post } from '../data/posts';
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const category = postCategories.find((c) => c.id === post.category) ?? postCategories[0];
+---
+
+<article class={`post-card tint-${category.tint}`} id={`post-${post.id}`} data-post-id={post.id} data-category={post.category}>
+  <header class="post-card__head">
+    <Avatar name={post.author.name} seed={post.author.username} size={40} />
+    <div class="post-card__who">
+      <span class="post-card__name">{post.author.username}</span>
+      <span class="post-card__time">{post.time}</span>
+    </div>
+    <span class="pill post-card__cat">{category.label}</span>
+  </header>
+  <p class="post-card__text">{post.text}</p>
+  <footer class="post-card__foot">
+    <button type="button" class="like-btn" data-like aria-pressed="false" aria-label={`Curtir publicação de ${post.author.username}`}>
+      <Icon name="heart" size={20} />
+      <span data-like-count>{post.likes}</span>
+    </button>
+    <button type="button" class="comment-btn" data-comment-toggle aria-expanded="false" aria-controls={`comments-${post.id}`}>
+      Comentar <span data-comment-count></span>
+    </button>
+  </footer>
+  <div class="post-comments" data-comments id={`comments-${post.id}`} hidden>
+    <ul class="post-comments__list" data-comment-list></ul>
+    <form class="post-comments__form" data-comment-form>
+      <label class="sr-only" for={`comment-input-${post.id}`}>Escreva um comentário</label>
+      <input
+        class="input"
+        id={`comment-input-${post.id}`}
+        name="text"
+        type="text"
+        maxlength="200"
+        placeholder="Escreva um comentário gentil…"
+        autocomplete="off"
+        required
+      />
+      <button type="submit" class="btn btn--primary btn--sm">Enviar</button>
+    </form>
+  </div>
+</article>

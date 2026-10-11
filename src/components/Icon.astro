@@ -1,0 +1,41 @@
+---
+/** Ícone linear Lucide, carregado sob demanda a partir de lucide-static. */
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+  strokeWidth?: number;
+}
+
+const { name, size = 20, class: className = '', strokeWidth = 1.75 } = Astro.props;
+
+const files = import.meta.glob('/node_modules/lucide-static/icons/*.svg', {
+  query: '?raw',
+  import: 'default',
+}) as Record<string, () => Promise<string>>;
+
+const load = files[`/node_modules/lucide-static/icons/${name}.svg`];
+if (!load) throw new Error(`Ícone Lucide não encontrado: "${name}"`);
+
+const inner = (await load())
+  .replace(/<!--[\s\S]*?-->/g, '')
+  .replace(/<svg[^>]*>/, '')
+  .replace('</svg>', '')
+  .trim();
+---
+
+<svg
+  class={`icon ${className}`.trim()}
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={strokeWidth}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  set:html={inner}
+/>

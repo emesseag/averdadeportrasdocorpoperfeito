@@ -1,0 +1,24 @@
+---
+import Icon from './Icon.astro';
+import { categoryById } from '../data/categories';
+import type { Article } from '../data/contents';
+
+interface Props {
+  article: Article;
+}
+const { article } = Astro.props;
+const category = categoryById(article.category)!;
+---
+
+<a class={`content-card tint-${category.tint}`} href={`/conteudos/${article.slug}`} data-category={article.category} data-masculine={article.masculine ? 'true' : 'false'}>
+  <div class="content-card__top">
+    <span class="content-card__icon"><Icon name={category.icon} size={22} /></span>
+    {article.masculine && <span class="pill" style="--tint: var(--navy); --tint-ink: #fff"><Icon name="mars" size={14} /> Espaço masculino</span>}
+  </div>
+  <h3>{article.title}</h3>
+  <p>{article.summary}</p>
+  <div class="content-card__meta">
+    <span>{category.label} · {article.minutes} min de leitura</span>
+    <span class="read">Ler <Icon name="arrow-right" size={14} /></span>
+  </div>
+</a>

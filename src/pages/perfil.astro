@@ -1,0 +1,68 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<AppLayout title="Meu perfil">
+  <section class="card" data-reveal aria-labelledby="profile-name">
+    <div class="profile-head">
+      <span class="avatar tint-lilac" style="--size:96px" data-user-initials aria-hidden="true"></span>
+      <div class="profile-head__info">
+        <h1 id="profile-name" data-user-name>Meu perfil</h1>
+        <p class="profile-head__user"><span data-user-username></span> · <span data-user-email></span></p>
+        <p class="profile-head__bio" data-user-bio></p>
+      </div>
+      <button type="button" class="btn btn--secondary" data-open-dialog="profile-dialog" aria-haspopup="dialog">
+        <Icon name="pencil" size={18} /> Editar perfil
+      </button>
+    </div>
+  </section>
+
+  <section aria-labelledby="my-posts-title">
+    <div class="section-head">
+      <h2 id="my-posts-title">Minhas publicações</h2>
+    </div>
+    <div class="feed feed--list" id="my-feed" data-feed data-owner="me" data-limit="0"></div>
+    <div class="empty" data-feed-empty="my-feed">
+      <p>Você ainda não compartilhou nada.</p>
+      <button type="button" class="btn btn--primary btn--sm" data-open-dialog="share-dialog" style="margin-top: var(--s-3)">
+        <Icon name="pencil" size={16} /> Compartilhe algo
+      </button>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="demo-title">
+    <h2 class="card__title" id="demo-title"><Icon name="rotate-ccw" size={22} /> Dados deste perfil</h2>
+    <p class="text-muted" style="margin-bottom: var(--s-4)">
+      Tudo o que você registra aqui (humor, gratidões, metas, desafios e publicações) fica salvo apenas neste navegador e somente na sua conta.
+      Restaurar apaga os dados <strong>deste perfil</strong>; a conta e as contas de outras pessoas não são afetadas.
+    </p>
+    <button type="button" class="btn btn--secondary btn--sm" data-reset-demo>Restaurar dados deste perfil</button>
+  </section>
+
+  <dialog class="dialog" id="profile-dialog" aria-labelledby="profile-dialog-title">
+    <form class="dialog__panel" id="profile-form" method="dialog">
+      <div class="dialog__head">
+        <h2 id="profile-dialog-title">Editar perfil</h2>
+        <button type="button" class="icon-btn" data-close-dialog aria-label="Fechar"><Icon name="x" size={22} /></button>
+      </div>
+      <div class="field">
+        <label for="profile-name-input">Nome</label>
+        <input class="input" id="profile-name-input" name="name" type="text" maxlength="60" required />
+      </div>
+      <div class="field">
+        <label for="profile-bio-input">Bio</label>
+        <textarea class="textarea" id="profile-bio-input" name="bio" maxlength="160" style="min-height: 90px"></textarea>
+        <span class="field__hint">Até 160 caracteres.</span>
+      </div>
+      <div class="field">
+        <label for="profile-avatar-input">Foto de perfil</label>
+        <input class="input" id="profile-avatar-input" type="text" value="Em breve" disabled />
+      </div>
+      <div class="dialog__actions">
+        <button type="button" class="btn btn--ghost" data-close-dialog>Cancelar</button>
+        <button type="submit" class="btn btn--primary">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+</AppLayout>

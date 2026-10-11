@@ -1,0 +1,14 @@
+---
+import MoodIcon from './MoodIcon.astro';
+import { moods } from '../data/moods';
+---
+
+<template id="mood-icons">
+  {
+    moods.map((m) => (
+      <span data-mood-icon={m.id}>
+        <MoodIcon id={m.id} size={30} />
+      </span>
+    ))
+  }
+</template>

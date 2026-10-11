@@ -1,0 +1,52 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import MoodIconSet from '../components/MoodIconSet.astro';
+import GratitudeCard from '../components/GratitudeCard.astro';
+import GoalsCard from '../components/GoalsCard.astro';
+import ChallengeCard from '../components/ChallengeCard.astro';
+import RightColumn from '../components/RightColumn.astro';
+import { challenges } from '../data/challenges';
+
+const weekly = challenges.find((c) => c.weekly)!;
+---
+
+<AppLayout title="Meu dia" right>
+  <PageHead eyebrow="Meu dia" icon="sun" title="Seu dia, em resumo" text="Um olhar rápido sobre como você está hoje. Sem cobranças: só o que importa para você.">
+    <span class="pill" data-day-date style="font-size: var(--fs-sm)"></span>
+  </PageHead>
+
+  <div class="day-grid" data-stagger>
+    <section class="card" aria-labelledby="day-mood-title">
+      <h2 class="card__title" id="day-mood-title"><Icon name="smile" size={22} /> Humor de hoje</h2>
+      <div class="day-mood" data-day-mood></div>
+      <p style="margin-top: var(--s-4)"><a href="/humor">Registrar ou alterar humor</a></p>
+    </section>
+
+    <section class="card" aria-labelledby="day-post-title" data-day-post>
+      <h2 class="card__title" id="day-post-title"><Icon name="message-circle" size={22} /> Publicação de hoje</h2>
+      <p data-day-post-text class="text-muted">Você ainda não compartilhou nada hoje.</p>
+      <div style="margin-top: var(--s-4)">
+        <button type="button" class="btn btn--primary btn--sm" data-day-post-cta data-open-dialog="share-dialog">
+          <Icon name="pencil" size={16} /> Compartilhe algo
+        </button>
+        <a data-day-post-link href="/perfil" hidden>Ver no meu perfil</a>
+      </div>
+    </section>
+
+    <GratitudeCard compact limit={3} id="day-gratitude" />
+    <GoalsCard compact id="day-goals" />
+
+    <section class="card" aria-labelledby="day-rem-title">
+      <h2 class="card__title" id="day-rem-title"><Icon name="bell" size={22} /> Lembretes de hoje</h2>
+      <ul class="goal-list" data-day-reminders style="margin-bottom: 0"></ul>
+      <p class="empty" data-day-reminders-empty hidden>Nenhum lembrete ativo. <a href="/lembretes">Escolher lembretes</a></p>
+    </section>
+
+    <ChallengeCard challenge={weekly} heading="Desafio da semana" />
+  </div>
+
+  <MoodIconSet />
+  <RightColumn slot="right" />
+</AppLayout>

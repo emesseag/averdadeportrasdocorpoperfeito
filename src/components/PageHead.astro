@@ -1,0 +1,27 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  text?: string;
+  eyebrow?: string;
+  icon?: string;
+}
+const { title, text, eyebrow, icon } = Astro.props;
+---
+
+<header class="page-head" data-reveal>
+  <div>
+    {
+      eyebrow && (
+        <span class="page-head__eyebrow">
+          {icon && <Icon name={icon} size={16} />}
+          {eyebrow}
+        </span>
+      )
+    }
+    <h1>{title}</h1>
+    {text && <p>{text}</p>}
+  </div>
+  <slot />
+</header>

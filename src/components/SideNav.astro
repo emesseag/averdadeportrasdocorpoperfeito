@@ -1,0 +1,55 @@
+---
+import Icon from './Icon.astro';
+import { shortcuts } from '../data/nav';
+import { sidebarQuote } from '../data/messages';
+
+interface Props {
+  navLabel?: string;
+}
+const { navLabel = 'Atalhos' } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<div class="side-nav">
+  <button type="button" class="btn btn--primary btn--block" data-open-dialog="share-dialog" aria-haspopup="dialog">
+    <Icon name="pencil" size={18} /> Compartilhe algo
+  </button>
+
+  <nav aria-label={navLabel}>
+    <ul class="side-nav__list list-reset">
+      {
+        shortcuts.map((item) => (
+          <li>
+            <a class="side-link" href={item.href} aria-current={path === item.href ? 'page' : undefined}>
+              <Icon name={item.icon ?? 'circle'} size={22} />
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <a class="side-card" href="/conteudos?espaco=masculino">
+    <Icon class="side-card__icon" name="mars" size={30} />
+    <span>
+      <strong>Espaço masculino</strong>
+      <small>Um espaço feito também para os homens.</small>
+    </span>
+    <Icon class="side-card__arrow" name="arrow-right" size={20} />
+  </a>
+
+  <figure class="quote-card">
+    <Icon class="quote-card__mark" name="quote" size={24} />
+    <blockquote><p>{sidebarQuote}</p></blockquote>
+    <Icon class="quote-card__heart" name="heart" size={26} />
+  </figure>
+
+  <a class="side-card" href="/recursos#ajuda">
+    <span>
+      <strong>Precisa de ajuda?</strong>
+      <small>Fale com alguém de confiança</small>
+    </span>
+    <Icon class="side-card__arrow" name="arrow-right" size={20} />
+  </a>
+</div>

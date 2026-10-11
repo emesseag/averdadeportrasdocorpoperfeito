@@ -1,0 +1,41 @@
+---
+import Icon from './Icon.astro';
+import { postCategories } from '../data/categories';
+---
+
+<dialog class="dialog" id="share-dialog" aria-labelledby="share-title">
+  <form class="dialog__panel" id="share-form" method="dialog">
+    <div class="dialog__head">
+      <div>
+        <h2 id="share-title">Compartilhe algo com a comunidade</h2>
+        <p>Aqui é um espaço seguro, sem julgamentos. Escreva com carinho por você e por quem vai ler.</p>
+      </div>
+      <button type="button" class="icon-btn" data-close-dialog aria-label="Fechar"><Icon name="x" size={22} /></button>
+    </div>
+
+    <div class="field">
+      <label for="share-text">O que você gostaria de compartilhar hoje?</label>
+      <textarea class="textarea" id="share-text" name="text" maxlength="400" placeholder="Escreva sua reflexão, conquista, gratidão ou desabafo…" required></textarea>
+      <span class="char-count" data-counter aria-hidden="true">0/400</span>
+    </div>
+
+    <div class="field">
+      <span class="field__label" id="share-cat-label">Categoria</span>
+      <div class="radio-chips" role="radiogroup" aria-labelledby="share-cat-label">
+        {
+          postCategories.map((c, i) => (
+            <label class="radio-chip">
+              <input type="radio" name="category" value={c.id} checked={i === 0} />
+              <span>{c.label}</span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="dialog__actions">
+      <button type="button" class="btn btn--ghost" data-close-dialog>Cancelar</button>
+      <button type="submit" class="btn btn--primary" disabled>Publicar</button>
+    </div>
+  </form>
+</dialog>

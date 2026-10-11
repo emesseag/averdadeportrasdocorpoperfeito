@@ -1,0 +1,23 @@
+---
+import Icon from './Icon.astro';
+---
+
+<dialog class="dialog" id="challenge-dialog" aria-labelledby="challenge-dialog-title">
+  <form class="dialog__panel" id="challenge-form" method="dialog">
+    <div class="dialog__head">
+      <div>
+        <h2 id="challenge-dialog-title" data-dialog-title>Desafio</h2>
+        <p data-dialog-step></p>
+      </div>
+      <button type="button" class="icon-btn" data-close-dialog aria-label="Fechar"><Icon name="x" size={22} /></button>
+    </div>
+    <div class="field">
+      <label for="challenge-text" data-dialog-prompt>Escreva aqui</label>
+      <input class="input" id="challenge-text" name="text" type="text" maxlength="160" autocomplete="off" required />
+    </div>
+    <div class="dialog__actions">
+      <button type="button" class="btn btn--ghost" data-close-dialog>Cancelar</button>
+      <button type="submit" class="btn btn--primary">Registrar</button>
+    </div>
+  </form>
+</dialog>

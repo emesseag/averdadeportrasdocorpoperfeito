@@ -1,0 +1,71 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ContentCard from '../../components/ContentCard.astro';
+import { articles, type Article } from '../../data/contents';
+import { categoryById } from '../../data/categories';
+
+export function getStaticPaths() {
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+
+interface Props {
+  article: Article;
+}
+const { article } = Astro.props;
+const category = categoryById(article.category)!;
+const related = articles
+  .filter((a) => a.slug !== article.slug && (a.category === article.category || (article.masculine && a.masculine)))
+  .slice(0, 3);
+---
+
+<AppLayout title={article.title} description={article.summary}>
+  <article class="article" data-reveal>
+    <a class="back-link" href="/conteudos"><Icon name="arrow-left" size={16} /> Voltar aos conteúdos</a>
+
+    <header class={`article__head tint-${category.tint}`}>
+      <div class="chips">
+        <span class="pill"><Icon name={category.icon} size={14} /> {category.label}</span>
+        {article.masculine && <span class="pill" style="--tint: var(--navy); --tint-ink: #fff"><Icon name="mars" size={14} /> Espaço masculino</span>}
+      </div>
+      <h1>{article.title}</h1>
+      <p class="article__lead">{article.summary}</p>
+      <div class="article__meta"><Icon name="clock" size={16} /> {article.minutes} min de leitura</div>
+    </header>
+
+    <div class="prose">
+      {
+        article.body.map((block) =>
+          typeof block === 'string' ? (
+            <p>{block}</p>
+          ) : Array.isArray(block) ? (
+            <ul>{block.map((item) => <li>{item}</li>)}</ul>
+          ) : (
+            <h2>{block.h}</h2>
+          ),
+        )
+      }
+    </div>
+
+    <section class="takeaways" aria-labelledby="takeaways-title">
+      <h2 id="takeaways-title"><Icon name="lightbulb" size={20} /> Para levar com você</h2>
+      <ul class="tip-list">
+        {article.takeaways.map((t) => <li><Icon name="check" size={16} /> {t}</li>)}
+      </ul>
+    </section>
+
+    <div class="notice" style="margin-top: var(--s-6)">
+      <Icon name="info" size={20} />
+      <p>Este conteúdo é informativo e não substitui a avaliação de um profissional de saúde. Se precisar de apoio, veja <a href="/recursos#ajuda">onde pedir ajuda</a>.</p>
+    </div>
+  </article>
+
+  {
+    related.length > 0 && (
+      <section aria-labelledby="related-title" style="margin-top: var(--s-8)">
+        <div class="section-head"><h2 id="related-title">Conteúdos relacionados</h2><a href="/conteudos">Ver todos</a></div>
+        <div class="content-grid">{related.map((a) => <ContentCard article={a} />)}</div>
+      </section>
+    )
+  }
+</AppLayout>

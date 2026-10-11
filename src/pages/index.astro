@@ -1,0 +1,95 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import Icon from '../components/Icon.astro';
+import PostCard from '../components/PostCard.astro';
+import MoodSelector from '../components/MoodSelector.astro';
+import GratitudeCard from '../components/GratitudeCard.astro';
+import GoalsCard from '../components/GoalsCard.astro';
+import ContentCard from '../components/ContentCard.astro';
+import MessageCard from '../components/MessageCard.astro';
+import ChallengeCard from '../components/ChallengeCard.astro';
+import ResourcesCard from '../components/ResourcesCard.astro';
+import { posts } from '../data/posts';
+import { articles } from '../data/contents';
+import { challenges } from '../data/challenges';
+
+const featured = posts.slice(0, 3);
+const picks = [articles[0], articles[2], articles[4]];
+const weekly = challenges.find((c) => c.weekly)!;
+---
+
+<AppLayout title="Início" right flow>
+  <section class="hero o-hero" aria-labelledby="hero-title" data-reveal>
+    <Icon class="hero__deco hero__deco--heart" name="heart" size={30} />
+    <Icon class="hero__deco hero__deco--spark" name="sparkles" size={22} />
+    <Icon class="hero__deco hero__deco--mars" name="mars" size={40} />
+
+    <div class="hero__content">
+      <h1 class="hero__title" id="hero-title">
+        <span>Todos os corpos.</span>
+        <span>Todas as histórias.</span>
+        <span class="accent">Uma mesma verdade.</span>
+      </h1>
+      <p class="hero__text">
+        Aqui é o seu espaço para compartilhar experiências, encontrar apoio e lembrar que cada pessoa possui sua própria história. Juntos somos mais fortes.
+      </p>
+      <div class="hero__actions">
+        <button type="button" class="btn btn--primary" data-open-dialog="share-dialog" aria-haspopup="dialog">
+          <Icon name="pencil" size={18} /> Compartilhe sua história
+        </button>
+        <a class="btn btn--secondary" href="/comunidade"><Icon name="users-round" size={18} /> Ver comunidade</a>
+      </div>
+    </div>
+
+    <div class="hero__media">
+      <img
+        src="/images/hero-home.webp"
+        alt="Ilustração de seis jovens diversos, três mulheres e três homens, de corpos e tons de pele variados, sorrindo juntos."
+        width="1200"
+        height="1200"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
+
+    <div class="men-banner">
+      <span class="men-banner__icon"><Icon name="mars" size={28} /></span>
+      <span class="men-banner__title">Espaço<br />masculino</span>
+      <p class="men-banner__text">Conteúdos, conversas e apoio voltados para os desafios e conquistas dos homens também.</p>
+      <a class="btn btn--outline-light btn--sm" href="/conteudos?espaco=masculino">Acessar</a>
+    </div>
+  </section>
+
+  <section class="o-community" aria-labelledby="insp-title">
+    <div class="section-head">
+      <h2 id="insp-title">Inspiração da Comunidade</h2>
+      <a href="/comunidade">Ver todas</a>
+    </div>
+    <div class="feed feed--cards" id="home-feed" data-feed data-limit="3" data-show-category="false" data-stagger>
+      {featured.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <MoodSelector class="o-mood" />
+
+  <div class="quick-grid o-quick" data-stagger>
+    <GratitudeCard compact limit={2} id="home-gratitude" />
+    <GoalsCard compact id="home-goals" />
+  </div>
+
+  <section class="o-contents" aria-labelledby="read-title">
+    <div class="section-head">
+      <h2 id="read-title">Para ler hoje</h2>
+      <a href="/conteudos">Ver conteúdos</a>
+    </div>
+    <div class="content-grid" data-stagger>
+      {picks.map((article) => <ContentCard article={article} />)}
+    </div>
+  </section>
+
+  <div slot="right" style="display: contents">
+    <div class="o-message"><MessageCard /></div>
+    <div class="o-challenge" data-reveal><ChallengeCard challenge={weekly} heading="Desafio da semana" uid="side" /></div>
+    <div class="o-resources"><ResourcesCard /></div>
+  </div>
+</AppLayout>

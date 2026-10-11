@@ -1,0 +1,91 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { mainNav } from '../data/nav';
+import { notifications } from '../data/notifications';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(`${href}/`));
+---
+
+<div class="site-header-wrap">
+  <div class="container">
+    <header class="site-header">
+      <button type="button" class="icon-btn menu-button" data-open-dialog="drawer" aria-label="Abrir menu" aria-haspopup="dialog">
+        <Icon name="menu" size={24} />
+      </button>
+      <Logo />
+
+      <nav class="main-nav" aria-label="Principal">
+        {mainNav.map((item) => <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>)}
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="icon-btn" data-open-dialog="search-dialog" aria-label="Buscar" aria-haspopup="dialog">
+          <Icon name="search" size={22} />
+        </button>
+
+        <div class="dropdown" data-dropdown>
+          <button
+            type="button"
+            class="icon-btn"
+            data-dropdown-btn
+            data-notif-bell
+            aria-label="Notificações"
+            aria-expanded="false"
+            aria-controls="notif-panel"
+          >
+            <Icon name="bell" size={22} />
+            <span class="notif-dot" data-notif-dot></span>
+          </button>
+          <div class="dropdown__panel" id="notif-panel" data-dropdown-panel hidden>
+            <div class="dropdown__head">
+              <span>Notificações</span>
+              <button type="button" class="link-btn" data-notif-readall>Marcar como lidas</button>
+            </div>
+            <ul class="list-reset">
+              {
+                notifications.map((n) => (
+                  <li data-notif={n.id}>
+                    <a class="notif-item" href={n.href}>
+                      <span class="notif-item__icon">
+                        <Icon name={n.icon} size={18} />
+                      </span>
+                      <span>
+                        {n.text}
+                        <small>{n.time}</small>
+                      </span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+            <p class="empty" data-notif-empty hidden>Nenhuma notificação por aqui.</p>
+          </div>
+        </div>
+
+        <a class="btn btn--primary btn--sm" href="/login" data-login-link hidden>Entrar</a>
+
+        <div class="dropdown" data-dropdown data-user-menu>
+          <button type="button" class="user-button" data-dropdown-btn aria-expanded="false" aria-controls="user-panel">
+            <span class="avatar tint-lilac" style="--size:36px" data-user-initials aria-hidden="true"></span>
+            <span class="user-button__greeting">Olá, <span data-user-first>você</span>!</span>
+            <Icon name="chevron-down" size={16} />
+          </button>
+          <div class="dropdown__panel dropdown__panel--sm" id="user-panel" data-dropdown-panel hidden>
+            <a class="menu-item" href="/perfil">
+              <Icon name="user" size={18} />
+              <span class="menu-item__label">
+                <span data-user-name>Minha conta</span>
+                <small data-user-email>Ver meu perfil</small>
+              </span>
+            </a>
+            <a class="menu-item" href="/meu-dia"><Icon name="sun" size={18} /> Meu dia</a>
+            <div class="dropdown__sep"></div>
+            <button type="button" class="menu-item" data-logout><Icon name="log-out" size={18} /> Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+</div>

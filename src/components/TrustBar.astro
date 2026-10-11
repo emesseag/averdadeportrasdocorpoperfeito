@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { trustItems } from '../data/nav';
+---
+
+<section class="trust-bar" aria-label="Nossos princípios" data-reveal>
+  {
+    trustItems.map((item) => (
+      <div class="trust-item">
+        <Icon class="trust-item__icon" name={item.icon} size={34} strokeWidth={1.4} />
+        <div>
+          <strong>{item.title}</strong>
+          <span>{item.text}</span>
+        </div>
+      </div>
+    ))
+  }
+</section>

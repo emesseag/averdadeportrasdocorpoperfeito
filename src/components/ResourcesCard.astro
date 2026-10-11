@@ -1,0 +1,21 @@
+---
+import Icon from './Icon.astro';
+import { contentCategories } from '../data/categories';
+---
+
+<section class="card" aria-labelledby="res-title" data-reveal>
+  <h2 class="card__title" id="res-title"><Icon name="sprout" size={22} /> Recursos e Ajuda</h2>
+  <ul class="resource-list">
+    {
+      contentCategories.map((c) => (
+        <li>
+          <a class="resource-link" href={`/recursos#${c.id}`}>
+            <Icon name={c.icon} size={20} />
+            {c.label}
+            <Icon name="chevron-right" size={16} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  compact?: boolean;
+  id?: string;
+}
+const { compact = false, id = 'goals' } = Astro.props;
+---
+
+<section class="card" aria-labelledby={`${id}-title`} data-goals data-compact={compact ? 'true' : 'false'} data-reveal>
+  <h2 class="card__title" id={`${id}-title`}><Icon name="trending-up" size={22} /> {compact ? 'Metas de hoje' : 'Minhas metas'}</h2>
+  <p class="text-muted" data-goals-summary style="font-size: var(--fs-sm); margin-bottom: var(--s-2)"></p>
+  <ul class="goal-list" data-goals-list></ul>
+  <p class="empty" data-goals-empty hidden style="margin-bottom: var(--s-4)">Você ainda não tem metas. Que tal criar uma pequena?</p>
+  <form class="inline-form" autocomplete="off">
+    <label class="sr-only" for={`${id}-field`}>Nova meta</label>
+    <input class="input" id={`${id}-field`} name="text" type="text" maxlength="100" placeholder="Nova meta…" required />
+    <button type="submit" class="btn btn--primary btn--sm"><Icon name="plus" size={16} /> Adicionar</button>
+  </form>
+  {
+    compact && (
+      <p data-goals-more hidden style="margin-top: var(--s-3); font-size: var(--fs-sm)">
+        <a href="/metas">Ver todas as metas</a>
+      </p>
+    )
+  }
+</section>

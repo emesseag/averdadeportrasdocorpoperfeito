@@ -1,0 +1,65 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import { contentCategories } from '../data/categories';
+---
+
+<AppLayout title="Recursos">
+  <PageHead
+    eyebrow="Recursos e ajuda"
+    icon="life-buoy"
+    title="Recursos e Ajuda"
+    text="Informações gerais para cuidar de você, e caminhos para procurar apoio quando precisar."
+  />
+
+  <div class="notice" data-reveal>
+    <Icon name="info" size={20} />
+    <p>
+      <strong>Importante:</strong> esta plataforma não é um serviço médico nem psicológico e não faz diagnósticos. As informações aqui são gerais e não substituem o acompanhamento de profissionais de saúde.
+    </p>
+  </div>
+
+  {
+    contentCategories.map((c) => (
+      <section class={`card resource-section tint-${c.tint}`} id={c.id} aria-labelledby={`${c.id}-title`} data-reveal>
+        <div class="resource-section__head">
+          <span class="content-card__icon"><Icon name={c.icon} size={26} /></span>
+          <div>
+            <h2 id={`${c.id}-title`}>{c.label}</h2>
+            <p class="text-muted">{c.description}</p>
+          </div>
+        </div>
+        <ul class="tip-list">
+          {c.tips.map((tip) => <li><Icon name="check" size={16} /> {tip}</li>)}
+        </ul>
+        {
+          c.id === 'ajuda' && (
+            <div class="help-grid">
+              <div class="help-card">
+                <strong>CVV</strong>
+                <span class="num">188</span>
+                <small>Apoio emocional 24 horas, gratuito. Também em <a href="https://www.cvv.org.br" rel="noopener" target="_blank">cvv.org.br</a>.</small>
+              </div>
+              <div class="help-card">
+                <strong>SAMU</strong>
+                <span class="num">192</span>
+                <small>Emergências de saúde, 24 horas.</small>
+              </div>
+              <div class="help-card">
+                <strong>UBS e CAPS</strong>
+                <span class="num">SUS</span>
+                <small>Procure a unidade de saúde ou o CAPS mais próximo de você.</small>
+              </div>
+            </div>
+          )
+        }
+        <div>
+          <a class="btn btn--secondary btn--sm" href={`/conteudos?categoria=${c.id}`}>
+            Ver conteúdos sobre o tema <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+      </section>
+    ))
+  }
+</AppLayout>

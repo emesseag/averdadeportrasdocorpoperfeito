@@ -1,0 +1,10 @@
+---
+import Icon from './Icon.astro';
+import { messageOfTheDay } from '../data/messages';
+---
+
+<section class="card message-card" aria-labelledby="msg-title" data-reveal>
+  <h2 class="card__title" id="msg-title"><Icon name="heart" size={22} /> Mensagem do dia</h2>
+  <p class="message-card__text">{messageOfTheDay()}</p>
+  <Icon class="message-card__heart" name="heart" size={30} />
+</section>

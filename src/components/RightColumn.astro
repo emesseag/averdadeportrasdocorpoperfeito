@@ -1,0 +1,12 @@
+---
+import MessageCard from './MessageCard.astro';
+import ChallengeCard from './ChallengeCard.astro';
+import ResourcesCard from './ResourcesCard.astro';
+import { challenges } from '../data/challenges';
+
+const weekly = challenges.find((c) => c.weekly)!;
+---
+
+<MessageCard />
+<div data-reveal><ChallengeCard challenge={weekly} heading="Desafio da semana" uid="side" /></div>
+<ResourcesCard />

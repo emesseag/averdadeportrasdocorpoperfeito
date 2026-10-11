@@ -1,0 +1,33 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import { reminders } from '../data/reminders';
+---
+
+<AppLayout title="Lembretes">
+  <PageHead
+    eyebrow="Lembretes"
+    icon="bell"
+    title="Lembretes gentis"
+    text="Escolha pequenos lembretes de cuidado. Os que estiverem ativos aparecem como checklist em Meu dia."
+  />
+  <section class="card" aria-label="Lista de lembretes" data-reveal>
+    {
+      reminders.map((r) => (
+        <div class="reminder-row">
+          <div class="reminder-row__text">
+            <label for={`rem-${r.id}`}>{r.label}</label>
+            <small>{r.when}</small>
+          </div>
+          <span class="switch">
+            <input type="checkbox" role="switch" id={`rem-${r.id}`} data-reminder-toggle={r.id} />
+            <span class="switch__track"></span>
+          </span>
+        </div>
+      ))
+    }
+  </section>
+  <p class="text-muted" style="font-size: var(--fs-sm)">
+    <a href="/meu-dia">Ver meu dia</a>
+  </p>
+</AppLayout>

@@ -1,0 +1,76 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import Icon from '../components/Icon.astro';
+
+const cards = [
+  {
+    icon: 'lightbulb',
+    title: 'A proposta',
+    text: ['“A Verdade Por Trás do Corpo Perfeito” é uma plataforma de autoestima, bem-estar e comunidade. Todos os dias, a pessoa pode ler uma mensagem, registrar como se sente, acompanhar pequenos desafios e conversar com outras pessoas.'],
+  },
+  {
+    icon: 'eye-off',
+    title: 'O problema',
+    text: ['Redes sociais, filtros e padrões irreais de beleza alimentam a comparação constante. Isso afeta a forma como jovens e adultos, mulheres e homens, enxergam o próprio corpo, e pode gerar insatisfação, ansiedade e isolamento.'],
+  },
+  {
+    icon: 'target',
+    title: 'O objetivo',
+    text: ['Criar um espaço leve, acolhedor e seguro para falar sobre imagem corporal, emoções e conquistas, com informação confiável e sem julgamentos, competição ou foco em aparência.'],
+  },
+  {
+    icon: 'sparkles',
+    title: 'Por que a autoestima importa',
+    text: ['Uma relação mais gentil com o próprio corpo está ligada a mais bem-estar, melhores relações e hábitos de cuidado mais saudáveis. Autoestima não é vaidade: é a base para pedir ajuda, se respeitar e respeitar os outros.'],
+  },
+  {
+    icon: 'users-round',
+    title: 'Por que a comunidade importa',
+    text: ['Perceber que outras pessoas sentem o mesmo diminui a solidão. Compartilhar uma história pode ajudar quem escreve e quem lê. Por isso, aqui não existem seguidores, ranking ou disputa por curtidas.'],
+  },
+  {
+    icon: 'graduation-cap',
+    title: 'Propósito acadêmico e social',
+    text: ['Este é um projeto escolar que busca unir tecnologia e responsabilidade social, levando a conversa sobre autoestima e saúde emocional para uma interface simples, inclusiva e acessível.'],
+  },
+];
+---
+
+<AppLayout title="Sobre nós" left={false} isPublic>
+  <section class="page-head about-intro" data-reveal>
+    <div>
+      <span class="page-head__eyebrow"><Icon name="heart-handshake" size={16} /> Sobre nós</span>
+      <h1>Todos os corpos. Todas as histórias. Uma mesma verdade.</h1>
+      <p>
+        A verdade por trás do corpo perfeito é que ele não existe: existem pessoas reais, com histórias, medos e conquistas. Nosso projeto nasceu para lembrar disso todos os dias.
+      </p>
+    </div>
+    <img
+      class="about-intro__img"
+      src="/images/sobre-nos-comunidade.webp"
+      alt="Ilustração de seis jovens diversos conversando e sorrindo em uma roda, em uma sala acolhedora."
+      width="1440"
+      height="1080"
+      loading="lazy"
+      decoding="async"
+    />
+  </section>
+
+  <div class="about-grid" data-stagger>
+    {
+      cards.map((c) => (
+        <section class="card about-card">
+          <h2><Icon name={c.icon} size={24} /> {c.title}</h2>
+          {c.text.map((t) => <p>{t}</p>)}
+        </section>
+      ))
+    }
+  </div>
+
+  <div class="notice" data-reveal>
+    <Icon name="info" size={20} />
+    <p>
+      Esta plataforma não oferece atendimento médico ou psicológico. Se você precisa de apoio, consulte a página <a href="/recursos#ajuda">Recursos e Ajuda</a>.
+    </p>
+  </div>
+</AppLayout>

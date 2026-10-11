@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  /** Versão resumida (home e Meu dia): só gratidões de hoje. */
+  compact?: boolean;
+  limit?: number;
+  id?: string;
+}
+const { compact = false, limit = 0, id = 'gratitude' } = Astro.props;
+
+const prompts = [
+  'Uma coisa que meu corpo me permitiu fazer hoje:',
+  'Alguém que me fez bem hoje:',
+  'Um momento simples que me deixou feliz:',
+  'Algo em mim que eu reconheço hoje:',
+];
+---
+
+<section class="card" aria-labelledby={`${id}-title`} data-gratitude data-scope={compact ? 'today' : 'all'} data-limit={limit} data-reveal>
+  <h2 class="card__title" id={`${id}-title`}><Icon name="heart" size={22} /> Pelo que você é grato hoje?</h2>
+  {
+    !compact && (
+      <div class="prompt-chips" role="group" aria-label="Ideias para começar">
+        {prompts.map((p) => (
+          <button type="button" class="chip" data-prompt={p}>{p}</button>
+        ))}
+      </div>
+    )
+  }
+  <form class={compact ? 'inline-form' : 'field'} autocomplete="off">
+    <label class="sr-only" for={`${id}-field`}>Pelo que você é grato hoje?</label>
+    {
+      compact ? (
+        <input class="input" id={`${id}-field`} name="text" type="text" maxlength="200" placeholder="Hoje sou grato por…" required />
+      ) : (
+        <textarea class="textarea" id={`${id}-field`} name="text" maxlength="300" placeholder="Escreva aqui, com suas palavras." required />
+      )
+    }
+    <button type="submit" class={compact ? 'btn btn--primary btn--sm' : 'btn btn--primary'} style={compact ? '' : 'align-self:flex-start'}>
+      {compact ? 'Registrar' : 'Registrar gratidão'}
+    </button>
+  </form>
+  <p class="sr-only" role="status" data-gratitude-status></p>
+  <ul class="entry-list" data-gratitude-list></ul>
+  <p class="empty" data-gratitude-empty style="margin-top: var(--s-4)">
+    {compact ? 'Hoje você ainda não registrou uma gratidão.' : 'Nenhum registro ainda. Comece com algo pequeno.'}
+  </p>
+</section>

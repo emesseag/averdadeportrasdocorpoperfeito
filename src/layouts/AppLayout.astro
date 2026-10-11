@@ -1,0 +1,172 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/inter/wght-italic.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/layout.css';
+import '../styles/components.css';
+import '../styles/pages.css';
+
+import Header from '../components/Header.astro';
+import SideNav from '../components/SideNav.astro';
+import MobileDrawer from '../components/MobileDrawer.astro';
+import TrustBar from '../components/TrustBar.astro';
+import Icon from '../components/Icon.astro';
+import PostCard from '../components/PostCard.astro';
+import ShareDialog from '../components/ShareDialog.astro';
+import SearchDialog from '../components/SearchDialog.astro';
+import ChallengeDialog from '../components/ChallengeDialog.astro';
+import { staticSearchItems } from '../data/search';
+import type { Post } from '../data/posts';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Mostra a sidebar esquerda (desktop). */
+  left?: boolean;
+  /** Mostra a coluna direita (slot "right"). */
+  right?: boolean;
+  /** Home: mistura as seções das duas colunas na ordem do celular. */
+  flow?: boolean;
+  /** Página acessível sem estar logado. */
+  isPublic?: boolean;
+  /** Sem header, sidebars e rodapé (login). */
+  bare?: boolean;
+}
+
+const {
+  title,
+  description = 'Plataforma de autoestima, bem-estar e comunidade. Todos os corpos. Todas as histórias. Uma mesma verdade.',
+  left = true,
+  right = false,
+  flow = false,
+  isPublic = false,
+  bare = false,
+} = Astro.props;
+
+const fullTitle = title === 'Início' ? 'A Verdade Por Trás do Corpo Perfeito' : `${title} · A Verdade Por Trás do Corpo Perfeito`;
+
+// Modelo usado pelo navegador para criar novos cards de publicação.
+const templatePost: Post = {
+  id: 'modelo',
+  author: { name: 'Modelo', username: 'modelo' },
+  time: '',
+  category: 'reflexao',
+  text: '',
+  likes: 0,
+  comments: [],
+};
+
+const searchJson = JSON.stringify(staticSearchItems).replace(/</g, '\\u003c');
+const shellClass = ['shell', left && 'shell--left', right && 'shell--right', flow && 'shell--flow'].filter(Boolean).join(' ');
+---
+
+<!doctype html>
+<html lang="pt-BR" data-public={isPublic ? 'true' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#8064D9" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      try {
+        // Sem sessão: páginas protegidas levam ao login.
+        var session = JSON.parse(localStorage.getItem('avtcp:session'));
+        var hasSession = !!(session && session.userId);
+        if (!hasSession && !document.documentElement.hasAttribute('data-public')) location.replace('/login');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    {
+      bare ? (
+        <slot />
+      ) : (
+        <>
+          <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+          <Header />
+          <MobileDrawer />
+
+          <div class="container">
+            <div class={shellClass}>
+              {
+                left && (
+                  <aside class="shell__left" aria-label="Atalhos e apoio">
+                    <SideNav />
+                  </aside>
+                )
+              }
+              <main class="shell__main" id="conteudo">
+                <slot />
+              </main>
+              {
+                right && (
+                  <aside class="shell__right" aria-label="Informações do dia">
+                    <slot name="right" />
+                  </aside>
+                )
+              }
+            </div>
+
+            <footer class="site-footer">
+              <TrustBar />
+              <p class="site-footer__note">
+                Projeto escolar. Esta plataforma não oferece atendimento médico ou psicológico. Em caso de sofrimento intenso, ligue 188 (CVV) ou 192 (SAMU).
+              </p>
+            </footer>
+          </div>
+
+          <div role="region" aria-label="Compartilhar">
+          <button type="button" class="fab" data-open-dialog="share-dialog" aria-haspopup="dialog" aria-label="Compartilhe algo">
+            <Icon name="pencil" size={22} /> <span class="fab__label">Compartilhe</span>
+          </button>
+          </div>
+
+          <ShareDialog />
+          <SearchDialog />
+          <ChallengeDialog />
+
+          <template id="post-template"><PostCard post={templatePost} /></template>
+          <script id="search-data" type="application/json" set:html={searchJson} />
+        </>
+      )
+    }
+    <div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+    <script is:inline>
+      // Preenche nome/iniciais da conta logada antes da primeira pintura.
+      (function () {
+        try {
+          var session = JSON.parse(localStorage.getItem('avtcp:session'));
+          var user = null;
+          if (session && session.userId) {
+            var list = JSON.parse(localStorage.getItem('avtcp:users') || '[]');
+            for (var i = 0; i < list.length; i++) if (list[i].id === session.userId) user = list[i];
+          }
+          var set = function (sel, text) {
+            document.querySelectorAll(sel).forEach(function (el) { el.textContent = text; });
+          };
+          if (!user) {
+            document.querySelectorAll('[data-user-menu]').forEach(function (el) { el.hidden = true; });
+            document.querySelectorAll('[data-login-link]').forEach(function (el) { el.hidden = false; });
+            return;
+          }
+          var parts = user.name.trim().split(/[\s._-]+/).filter(Boolean);
+          var initials = parts.length > 1 ? parts[0][0] + parts[parts.length - 1][0] : (parts[0] || '?').slice(0, 2);
+          set('[data-user-first]', parts[0] || user.name);
+          set('[data-user-name]', user.name);
+          set('[data-user-username]', '@' + user.username);
+          set('[data-user-email]', user.email);
+          set('[data-user-bio]', user.bio);
+          set('[data-user-initials]', initials.toUpperCase());
+        } catch (e) {}
+      })();
+    </script>
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

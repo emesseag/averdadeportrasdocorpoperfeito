@@ -1,0 +1,29 @@
+---
+import MoodIcon from './MoodIcon.astro';
+import { moods } from '../data/moods';
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+const { id = 'mood', class: className = '' } = Astro.props;
+---
+
+<section class={`card mood ${className}`.trim()} aria-labelledby={`${id}-title`} data-mood data-reveal>
+  <h2 class="mood__title" id={`${id}-title`}>Como você está se sentindo hoje?</h2>
+  <ul class="mood__grid" role="list">
+    {
+      moods.map((m) => (
+        <li>
+          <button type="button" class="mood__btn" data-mood-id={m.id} aria-pressed="false">
+            <span class="mood__icon">
+              <MoodIcon id={m.id} size={30} />
+            </span>
+            <span>{m.label}</span>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="mood__status" data-mood-status data-state="idle" role="status">Escolha como você está. Leva só um segundo.</p>
+</section>

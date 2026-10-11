@@ -1,0 +1,14 @@
+---
+import { initials, tintFor } from '../utils/format';
+
+interface Props {
+  name: string;
+  /** Texto usado para escolher a cor (ex.: username). */
+  seed?: string;
+  size?: number;
+  class?: string;
+}
+const { name, seed = name, size = 40, class: className = '' } = Astro.props;
+---
+
+<span class={`avatar tint-${tintFor(seed)} ${className}`.trim()} style={`--size:${size}px`} aria-hidden="true">{initials(name)}</span>

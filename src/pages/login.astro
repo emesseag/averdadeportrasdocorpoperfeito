@@ -1,0 +1,99 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<AppLayout title="Entrar" bare isPublic>
+  <div class="auth" data-auth>
+    <aside class="auth__side">
+      <Logo />
+      <div>
+        <h1>
+          <span>Todos os corpos.</span>
+          <span>Todas as histórias.</span>
+          <span class="hero__title"><span class="accent">Uma mesma verdade.</span></span>
+        </h1>
+        <p>Um espaço seguro para compartilhar, se inspirar e incentivar outras pessoas todos os dias.</p>
+      </div>
+      <ul class="tip-list">
+        <li><Icon name="shield-check" size={18} /> Sem julgamentos</li>
+        <li><Icon name="users" size={18} /> Uma comunidade que incentiva</li>
+      </ul>
+    </aside>
+
+    <main class="auth__main" id="conteudo">
+      <div class="auth__card">
+        <Logo class="auth__logo" />
+        <div>
+          <h2 style="font-size: var(--fs-2xl); font-weight: 800">Bem-vindo(a)</h2>
+          <p class="text-muted">Entre na sua conta ou crie uma nova para conhecer a plataforma.</p>
+        </div>
+
+        <div class="notice" data-storage-warning hidden>
+          <Icon name="triangle-alert" size={20} />
+          <p>Seu navegador está bloqueando o armazenamento local. Sem ele, a conta não é mantida ao recarregar a página.</p>
+        </div>
+
+        <div class="auth__tabs" role="tablist" aria-label="Acesso">
+          <button type="button" class="auth__tab" role="tab" id="tab-login" aria-selected="true" aria-controls="panel-login">Entrar</button>
+          <button type="button" class="auth__tab" role="tab" id="tab-signup" aria-selected="false" aria-controls="panel-signup" tabindex="-1">Criar conta</button>
+        </div>
+
+        <div id="panel-login" role="tabpanel" aria-labelledby="tab-login">
+          <form class="auth__form" data-login-form novalidate>
+            <div class="field">
+              <label for="login-email">E-mail</label>
+              <input class="input" id="login-email" name="email" type="email" autocomplete="email" aria-describedby="login-email-error" />
+              <p class="field__error" id="login-email-error" data-error-for="email" role="alert" hidden></p>
+            </div>
+            <div class="field">
+              <label for="login-pass">Senha</label>
+              <input class="input" id="login-pass" name="password" type="password" autocomplete="current-password" aria-describedby="login-pass-error" />
+              <p class="field__error" id="login-pass-error" data-error-for="password" role="alert" hidden></p>
+            </div>
+            <p class="field__error" data-form-error role="alert" hidden></p>
+            <button type="submit" class="btn btn--primary btn--block">Entrar</button>
+          </form>
+
+          <p class="auth__switch">
+            Ainda não tem conta? <button type="button" class="link-btn" data-goto-tab="1">Criar conta</button>
+          </p>
+        </div>
+
+        <div id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" hidden>
+          <form class="auth__form" data-signup-form novalidate>
+            <div class="field">
+              <label for="signup-name">Nome</label>
+              <input class="input" id="signup-name" name="name" type="text" autocomplete="name" maxlength="60" aria-describedby="signup-name-error" />
+              <p class="field__error" id="signup-name-error" data-error-for="name" role="alert" hidden></p>
+            </div>
+            <div class="field">
+              <label for="signup-email">E-mail</label>
+              <input class="input" id="signup-email" name="email" type="email" autocomplete="email" aria-describedby="signup-email-error" />
+              <p class="field__error" id="signup-email-error" data-error-for="email" role="alert" hidden></p>
+            </div>
+            <div class="field">
+              <label for="signup-pass">Senha</label>
+              <input class="input" id="signup-pass" name="password" type="password" autocomplete="new-password" aria-describedby="signup-pass-hint signup-pass-error" />
+              <span class="field__hint" id="signup-pass-hint">Pelo menos 8 caracteres.</span>
+              <p class="field__error" id="signup-pass-error" data-error-for="password" role="alert" hidden></p>
+            </div>
+            <div class="field">
+              <label for="signup-confirm">Confirmar senha</label>
+              <input class="input" id="signup-confirm" name="confirm" type="password" autocomplete="new-password" aria-describedby="signup-confirm-error" />
+              <p class="field__error" id="signup-confirm-error" data-error-for="confirm" role="alert" hidden></p>
+            </div>
+            <p class="field__error" data-form-error role="alert" hidden></p>
+            <button type="submit" class="btn btn--primary btn--block">Criar conta</button>
+          </form>
+          <p class="auth__switch">
+            Já tem conta? <button type="button" class="link-btn" data-goto-tab="0">Entrar</button>
+          </p>
+        </div>
+
+        <a href="/sobre-nos" style="font-size: var(--fs-sm)">Conheça o projeto</a>
+      </div>
+    </main>
+  </div>
+</AppLayout>

@@ -1,0 +1,42 @@
+---
+/** Rostos lineares no mesmo estilo dos ícones Lucide. */
+interface Props {
+  id: string;
+  size?: number;
+}
+const { id, size = 30 } = Astro.props;
+
+const faces: Record<string, string> = {
+  feliz: '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9.5h.01M15 9.5h.01"/>',
+  animado:
+    '<circle cx="12" cy="12" r="10"/><path d="M7.5 13.5h9a4.5 4.5 0 0 1-9 0Z"/><path d="m9 7.5.6 1.2 1.3.2-.95.9.22 1.3L9 10.5l-1.17.6.22-1.3-.95-.9 1.3-.2Z"/><path d="m15 7.5.6 1.2 1.3.2-.95.9.22 1.3L15 10.5l-1.17.6.22-1.3-.95-.9 1.3-.2Z"/>',
+  tranquilo:
+    '<circle cx="12" cy="12" r="10"/><path d="M7.5 10.5c.6.9 1.9.9 2.5 0M14 10.5c.6.9 1.9.9 2.5 0"/><path d="M9 15c1.7 1.2 4.3 1.2 6 0"/>',
+  cansado:
+    '<circle cx="12" cy="12" r="10"/><path d="M7.5 10h3M13.5 10h3"/><ellipse cx="12" cy="15.5" rx="1.6" ry="2"/>',
+  ansioso:
+    '<circle cx="12" cy="12" r="10"/><path d="M7.5 7.5 10 7M16.5 7.5 14 7"/><path d="M9 10.5h.01M15 10.5h.01"/><path d="M8 15.5c1-1.2 2-1.2 4 0s3 1.2 4 0"/>',
+  triste:
+    '<circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><path d="M9 9.5h.01M15 9.5h.01"/><path d="M9 12c.5.6.7 1 .7 1.3a.7.7 0 0 1-1.4 0c0-.3.2-.7.7-1.3Z"/>',
+  motivado:
+    '<path d="M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-9 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C2.118 12.723 2.627 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.105 0-1.64-.444-2-1"/><path d="M15 14a5 5 0 0 0-7.584 2"/><path d="M9.964 6.825C8.019 7.977 9.5 13 8 15"/>',
+  outro: '<circle cx="12" cy="12" r="10"/><path d="M8 12h.01M12 12h.01M16 12h.01" stroke-width="3"/>',
+};
+const body = faces[id] ?? faces.outro;
+---
+
+<svg
+  class="icon"
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  set:html={body}
+/>

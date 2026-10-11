@@ -1,0 +1,65 @@
+---
+import Icon from './Icon.astro';
+import { seedChallengeStates, statusLabels, type Challenge } from '../data/challenges';
+
+interface Props {
+  challenge: Challenge;
+  /** Título do bloco (ex.: "Desafio da semana"). Sem ele, mostra apenas o status. */
+  heading?: string;
+  showEntries?: boolean;
+  class?: string;
+  /** Use quando o mesmo desafio aparece duas vezes na página (evita ids duplicados). */
+  uid?: string;
+}
+const { challenge, heading, showEntries = false, class: className = '', uid } = Astro.props;
+const seed = seedChallengeStates[challenge.id] ?? { status: 'disponivel', progress: 0, entries: [] };
+const pct = Math.round((seed.progress / challenge.target) * 100);
+const headingId = `challenge-${challenge.id}${uid ? `-${uid}` : ''}-title`;
+---
+
+<article class={`card challenge ${className}`.trim()} id={uid ? undefined : `desafio-${challenge.id}`} data-challenge={challenge.id} aria-labelledby={headingId}>
+  {
+    heading ? (
+      <h2 class="card__title">
+        <Icon name="star" size={22} /> {heading}
+      </h2>
+    ) : (
+      <div class="challenge-card__top">
+        <span class="pill status-pill" data-status-pill data-status={seed.status}>{statusLabels[seed.status]}</span>
+        <span class="text-muted" style="font-size: var(--fs-xs)">{challenge.target > 1 ? `${challenge.target} etapas` : '1 etapa'}</span>
+      </div>
+    )
+  }
+  <h3 class="challenge__title" id={headingId}>{challenge.title}</h3>
+  <p class="challenge__desc">{challenge.description}</p>
+
+  {
+    challenge.target > 1 && (
+      <div class="challenge__progress">
+        <div
+          class="progress"
+          data-progress
+          role="progressbar"
+          aria-label={`Progresso do desafio ${challenge.title}`}
+          aria-valuemin="0"
+          aria-valuemax={challenge.target}
+          aria-valuenow={seed.progress}
+        >
+          <div class="progress__bar" style={`--value:${pct}%`} />
+        </div>
+        <span class="challenge__count" data-count>{seed.progress}/{challenge.target}</span>
+      </div>
+    )
+  }
+
+  {showEntries && <ul class="challenge__entries" data-entries hidden />}
+
+  <div class="challenge__actions">
+    <button type="button" class="btn btn--primary btn--sm" data-action>
+      {seed.status === 'disponivel' ? 'Aceitar desafio' : seed.status === 'concluido' ? 'Concluído 💜' : challenge.needsText ? 'Continuar desafio' : 'Marcar como concluído'}
+    </button>
+    <button type="button" class="btn btn--ghost btn--sm" data-reset hidden={seed.status === 'disponivel'}>
+      <Icon name="rotate-ccw" size={16} /> Refazer
+    </button>
+  </div>
+</article>

@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+---
+
+<dialog class="dialog dialog--search" id="search-dialog" aria-label="Buscar">
+  <div class="dialog__panel">
+    <div class="search-box">
+      <Icon name="search" size={20} />
+      <label class="sr-only" for="search-input">Buscar</label>
+      <input class="input" id="search-input" type="text" enterkeyhint="search" placeholder="Buscar conteúdos, desafios ou comunidade..." autocomplete="off" />
+    </div>
+    <p class="text-muted" id="search-status" role="status" style="font-size: var(--fs-sm)">Digite ao menos 2 letras para buscar.</p>
+    <ul class="search-results" id="search-results"></ul>
+    <div class="dialog__actions">
+      <button type="button" class="btn btn--ghost" data-close-dialog>Fechar</button>
+    </div>
+  </div>
+</dialog>

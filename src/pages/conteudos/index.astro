@@ -1,0 +1,40 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import PageHead from '../../components/PageHead.astro';
+import ContentCard from '../../components/ContentCard.astro';
+import Icon from '../../components/Icon.astro';
+import RightColumn from '../../components/RightColumn.astro';
+import { articles } from '../../data/contents';
+import { contentCategories } from '../../data/categories';
+---
+
+<AppLayout title="Conteúdos" right>
+  <PageHead
+    eyebrow="Biblioteca"
+    icon="book-open"
+    title="Conteúdos"
+    text="Informação confiável, em linguagem simples, sobre saúde, autoestima, imagem corporal e convivência digital."
+  />
+
+  <div class="chips" data-content-filters role="group" aria-label="Filtrar conteúdos">
+    <button type="button" class="chip" data-filter="todos" aria-pressed="true">Todos</button>
+    {contentCategories.map((c) => <button type="button" class="chip" data-filter={c.id} aria-pressed="false">{c.label}</button>)}
+    <button type="button" class="chip chip--male" data-filter="masculino" aria-pressed="false">
+      <Icon name="mars" size={16} /> Espaço masculino
+    </button>
+  </div>
+
+  <div class="notice" data-male-notice hidden>
+    <Icon name="mars" size={20} />
+    <p>
+      <strong>Espaço masculino.</strong> Textos sobre pressão estética, comparação corporal, musculação, redes sociais, vulnerabilidade e saúde emocional dos homens.
+    </p>
+  </div>
+
+  <div class="content-grid" id="content-grid" data-stagger>
+    {articles.map((article) => <ContentCard article={article} />)}
+  </div>
+  <p class="empty" data-content-empty hidden>Nenhum conteúdo nessa categoria ainda.</p>
+
+  <RightColumn slot="right" />
+</AppLayout>

@@ -1,0 +1,39 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import PageHead from '../components/PageHead.astro';
+import ChallengeCard from '../components/ChallengeCard.astro';
+import { challenges } from '../data/challenges';
+
+const current = challenges.find((c) => c.weekly)!;
+const others = challenges.filter((c) => !c.weekly);
+---
+
+<AppLayout title="Desafios">
+  <PageHead
+    eyebrow="Desafios"
+    icon="star"
+    title="Desafios"
+    text="Pequenos convites para cuidar de você. Sem pontos, sem ranking e sem pressa: cada pessoa vai no seu tempo."
+  />
+
+  <section aria-labelledby="current-title">
+    <div class="section-head"><h2 id="current-title">Desafio atual</h2></div>
+    <div data-reveal>
+      <ChallengeCard challenge={current} heading="Desafio da semana" showEntries class="challenge-feature" />
+    </div>
+  </section>
+
+  <section aria-labelledby="others-title">
+    <div class="section-head"><h2 id="others-title">Outros desafios</h2></div>
+    <div class="chips" data-status-filters role="group" aria-label="Filtrar desafios por situação" style="margin-bottom: var(--s-4)">
+      <button type="button" class="chip" data-status-filter="todos" aria-pressed="true">Todos</button>
+      <button type="button" class="chip" data-status-filter="disponivel" aria-pressed="false">Disponíveis</button>
+      <button type="button" class="chip" data-status-filter="andamento" aria-pressed="false">Em andamento</button>
+      <button type="button" class="chip" data-status-filter="concluido" aria-pressed="false">Concluídos</button>
+    </div>
+    <div class="challenge-grid" data-stagger>
+      {others.map((c) => <ChallengeCard challenge={c} class="challenge-card" />)}
+    </div>
+    <p class="empty" data-challenge-empty hidden>Nenhum desafio nessa situação por enquanto.</p>
+  </section>
+</AppLayout>
